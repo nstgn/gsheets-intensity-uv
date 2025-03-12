@@ -135,7 +135,7 @@ for i, (index, row) in enumerate(filtered_results_1hour.iterrows()):
             f"""
             <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
                 <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
-                <h2 style="color:white;">{icon} {row['Predicted_Index']}</h2>
+                <h2 style="color:white;">{icon} {row['3,6,8,11,15']}</h2>
                 <p style="color:white;">{desc}</p>
             </div>
             """,
