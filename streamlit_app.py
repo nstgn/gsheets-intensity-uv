@@ -113,6 +113,7 @@ filtered_results_1hour = pd.DataFrame(selected_rows)
 
 #st.dataframe(filtered_results_1hour)
 
+
 # Fungsi untuk menentukan kategori UV
 def get_uv_category(uv_level):
     if uv_level < 3:
@@ -129,16 +130,20 @@ def get_uv_category(uv_level):
 # Streamlit UI
 st.title("UV Index Forecast")
 
-# Tampilkan hasil prediksi
-for index, row in future_results.iterrows():
+# Tampilkan hasil prediksi dalam format horizontal
+cols = st.columns(5)
+
+for i, (index, row) in enumerate(future_results.iterrows()):
     icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
-    st.markdown(
-        f"""
-        <div style="background-color:{bg_color}; padding:10px; border-radius:10px; margin-bottom:10px;">
-            <h3>{icon} {desc}</h3>
-            <p><strong>Time:</strong> {row['Datetime'].strftime('%Y-%m-%d %H:%M')}</p>
-            <p><strong>Predicted UV Index:</strong> {row['Predicted_Index']}</p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    with cols[i]:
+        st.markdown(
+            f"""
+            <div style="background-color:{bg_color}; padding:10px; border-radius:10px; text-align:center;">
+                <h3>{icon} {desc}</h3>
+                <p><strong>Time:</strong> {row['Datetime'].strftime('%H:%M')}</p>
+                <p><strong>UV Index:</strong> {row['Predicted_Index']}</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
