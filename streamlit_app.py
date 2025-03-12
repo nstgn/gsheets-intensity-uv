@@ -138,10 +138,10 @@ for i, row in filtered_results_1hour.iterrows():
             desc = "Extreme"
             bg_color = "#9900cc"
             
-    st.markdown(f"""
-    <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
-    <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
-    <h2 style="color:white;">{icon} {uv_level}</h2>
-    <p style="color:white;">{desc}</p>
-    </div>
-    """,unsafe_allow_html=True,)
+        st.markdown(f"""
+        <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
+        <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
+        <h2 style="color:white;">{icon} {uv_level}</h2>
+        <p style="color:white;">{desc}</p>
+        </div>
+        """,unsafe_allow_html=True,)
