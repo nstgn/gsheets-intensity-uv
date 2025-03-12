@@ -1,6 +1,5 @@
 # Custom Header
-st.markdown(
-    """
+st.markdown( """
     <style>
     .header {
         background-color: #D6D6F5; padding: 10px; text-align: center; border-radius: 7px;
@@ -13,8 +12,7 @@ st.markdown(
         <img src="https://upload.wikimedia.org/wikipedia/id/2/2d/Undip.png" alt="Logo">
     </div>
     """,
-    unsafe_allow_html=True
-)
+    unsafe_allow_html=True )
 
 # Navigasi Sidebar
 st.sidebar.title("Navigasi")
