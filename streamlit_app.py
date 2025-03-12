@@ -126,22 +126,18 @@ def get_uv_category(uv_level):
     else:
         return "🟣", "Extreme", "#9900cc"
 
-# Streamlit UI
-st.title("UV Index Forecast")
-
-# Tampilkan hasil prediksi dalam format horizontal
 cols = st.columns(5)
 
 for i, (index, row) in enumerate(filtered_results_1hour.iterrows()):
     icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
     with cols[i]:
-        st.markdown(
+       st.markdown(
             f"""
-            <div style="background-color:{bg_color}; padding:10px; border-radius:10px; text-align:center;">
-                <h3>{icon} {desc}</h3>
-                <p><strong>Time:</strong> {row['Datetime'].strftime('%H:%M')}</p>
-                <p><strong>UV Index:</strong> {row['Predicted_Index']}</p>
+            <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
+                <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
+                <h2 style="color:white;">{icon} {uv_level}</h2>
+                <p style="color:white;">{desc}</p>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
