@@ -87,6 +87,13 @@ for _ in range(future_steps):
     future_input = np.roll(future_input, -1, axis=1)
     future_input[0, -1, 0] = future_pred[0, 0]
     
+    min_length = min(len(future_timestamps), len(future_predictions_dnm.flatten()))
+    future_results = pd.DataFrame({
+        'Datetime': future_timestamps[:min_length],  
+        'Predicted_Index': future_predictions_dnm.flatten()[:min_length]
+    })
+    st.dataframe(future_results)
+    
     future_predictions_dnm = np.round (scaler.inverse_transform(np.array(future_predictions).reshape(-1, 1))).astype(int)
     future_results = pd.DataFrame({'Datetime': future_timestamps, 'Predicted_Index': future_predictions_dnm.flatten()})
     
