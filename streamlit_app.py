@@ -114,9 +114,13 @@ filtered_results_1hour = pd.DataFrame(selected_rows)
 #st.dataframe(filtered_results_1hour)
 
 cols = st.columns(len(filtered_results_1hour))
-for i, row in filtered_results_1hour.iterrows():
-    with cols[i]:
-        uv_level = row["Predicted_Index"]
+#for i, row in filtered_results_1hour.iterrows():
+    #with cols[i]:
+        #uv_level = row["Predicted_Index"]
+
+for idx, row in enumerate(filtered_results_1hour.itertuples()):
+    with cols[idx]:  # Gunakan idx sebagai indeks, karena itertuples() lebih aman
+        uv_level = row.Predicted_Index
         if uv_level < 3:
             icon = "🟢"
             desc = "Low"
