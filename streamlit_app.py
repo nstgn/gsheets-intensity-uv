@@ -127,6 +127,7 @@ def get_uv_category(uv_level):
         return "🟣", "Extreme", "#9900cc"
 
 cols = st.columns(5)
+manual_numbers = [3, 6, 8, 11, 15]  # Angka manual yang ingin ditampilkan
 
 for i, (index, row) in enumerate(filtered_results_1hour.iterrows()):
     icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
@@ -135,7 +136,7 @@ for i, (index, row) in enumerate(filtered_results_1hour.iterrows()):
             f"""
             <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
                 <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
-                <h2 style="color:white;">{icon} {row['3,6,8,11,15']}</h2>
+                <h2 style="color:white;">{icon} {row['manual_numbers']}</h2>
                 <p style="color:white;">{desc}</p>
             </div>
             """,
