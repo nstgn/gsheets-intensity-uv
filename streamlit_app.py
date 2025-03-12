@@ -131,11 +131,11 @@ cols = st.columns(5)
 for i, (index, row) in enumerate(filtered_results_1hour.iterrows()):
     icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
     with cols[i]:
-       st.markdown(
+        st.markdown(
             f"""
             <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
                 <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
-                <h2 style="color:white;">{icon} {uv_level}</h2>
+                <h2 style="color:white;">{icon} {row['Predicted_Index']}</h2>
                 <p style="color:white;">{desc}</p>
             </div>
             """,
