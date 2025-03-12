@@ -113,7 +113,6 @@ filtered_results_1hour = pd.DataFrame(selected_rows)
 
 #st.dataframe(filtered_results_1hour)
 
-
 # Fungsi untuk menentukan kategori UV
 def get_uv_category(uv_level):
     if uv_level < 3:
@@ -133,7 +132,7 @@ st.title("UV Index Forecast")
 # Tampilkan hasil prediksi dalam format horizontal
 cols = st.columns(5)
 
-for i, (index, row) in enumerate(future_results.iterrows()):
+for i, (index, row) in enumerate(filtered_results_1hour.iterrows()):
     icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
     with cols[i]:
         st.markdown(
@@ -146,4 +145,3 @@ for i, (index, row) in enumerate(future_results.iterrows()):
             """,
             unsafe_allow_html=True
         )
-
