@@ -81,27 +81,24 @@ future_steps = 150  # Tentukan jumlah langkah ke depan yang ingin diprediksi
 future_input = X_test[-1].reshape(1, n_steps, 1)
 future_predictions = []
 future_timestamps = [last_time + pd.Timedelta(minutes=2 * (i + 1)) for i in range(future_steps)]
+
 for _ in range(future_steps):
     future_pred = model.predict(future_input, verbose=0)
     future_predictions.append(future_pred[0, 0])
-    future_input = np.roll(future_input, -1, axis=1)
-    future_input[0, -1, 0] = future_pred[0, 0]
-    
-    min_length = min(len(future_timestamps), len(future_predictions_dnm.flatten()))
-    future_results = pd.DataFrame({
-        'Datetime': future_timestamps[:min_length],  
-        'Predicted_Index': future_predictions_dnm.flatten()[:min_length]
-    })
-    st.dataframe(future_results)
-    
-    future_predictions_dnm = np.round (scaler.inverse_transform(np.array(future_predictions).reshape(-1, 1))).astype(int)
-    future_results = pd.DataFrame({'Datetime': future_timestamps, 'Predicted_Index': future_predictions_dnm.flatten()})
-    
-    start_time = last_time + pd.Timedelta(hours=1)
-    target_times = [start_time + pd.Timedelta(hours=i) for i in range(5)]
-    selected_rows = [
-        future_results.loc[(future_results['Datetime'] - target_time).abs().idxmin()]
-        for target_time in target_times]
-    filtered_results_1hour = pd.DataFrame(selected_rows)
+
+    future_input = np.append(future_input[:, 1:, :], [[[future_pred[0, 0]]]], axis=1)
+
+future_predictions_array = np.array(future_predictions).reshape(-1, 1)
+future_predictions_dnm = np.round(scaler.inverse_transform(future_predictions_array)).astype(int)
+
+start_time = last_time + pd.Timedelta(hours=1)
+target_times = [start_time + pd.Timedelta(hours=i) for i in range(5)]
+
+selected_rows = []
+for target_time in target_times:
+    closest_index = (future_results['Datetime'] - target_time).abs().idxmin()
+    selected_rows.append(future_results.loc[closest_index])
+
+filtered_results_1hour = pd.DataFrame(selected_rows)
 
 st.dataframe(filtered_results_1hour)
