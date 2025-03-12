@@ -113,8 +113,8 @@ filtered_results_1hour = pd.DataFrame(selected_rows)
 
 #st.dataframe(filtered_results_1hour)
 
-cols = st.columns(len(future_results))
-    for i, row in future_results.iterrows():
+cols = st.columns(len(filtered_results_1hour))
+    for i, row in filtered_results_1hour.iterrows():
         with cols[i]:
             uv_level = row["Predicted_Index"]
             if uv_level < 3:
