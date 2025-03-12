@@ -113,39 +113,32 @@ filtered_results_1hour = pd.DataFrame(selected_rows)
 
 #st.dataframe(filtered_results_1hour)
 
-cols = st.columns(len(filtered_results_1hour))
-#for i, row in filtered_results_1hour.iterrows():
-    #with cols[i]:
-        #uv_level = row["Predicted_Index"]
+# Fungsi untuk menentukan kategori UV
+def get_uv_category(uv_level):
+    if uv_level < 3:
+        return "🟢", "Low", "#00ff00"
+    elif uv_level < 6:
+        return "🟡", "Moderate", "#ffe600"
+    elif uv_level < 8:
+        return "🟠", "High", "#ff8c00"
+    elif uv_level < 11:
+        return "🔴", "Very High", "#ff0000"
+    else:
+        return "🟣", "Extreme", "#9900cc"
 
-for idx, row in enumerate(filtered_results_1hour.itertuples()):
-    with cols[idx]:  # Gunakan idx sebagai indeks, karena itertuples() lebih aman
-        uv_level = row.Predicted_Index
-        if uv_level < 3:
-            icon = "🟢"
-            desc = "Low"
-            bg_color = "#00ff00"
-        elif uv_level < 6:
-            icon = "🟡"
-            desc = "Moderate"
-            bg_color = "#ffe600"
-        elif uv_level < 8:
-            icon = "🟠"
-            desc = "High"
-            bg_color = "#ff8c00"
-        elif uv_level < 11:
-            icon = "🔴"
-            desc = "Very High"
-            bg_color = "#ff0000"
-        else:
-            icon = "🟣"
-            desc = "Extreme"
-            bg_color = "#9900cc"
-            
-        st.markdown(f"""
-        <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
-        <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
-        <h2 style="color:white;">{icon} {uv_level}</h2>
-        <p style="color:white;">{desc}</p>
+# Streamlit UI
+st.title("UV Index Forecast")
+
+# Tampilkan hasil prediksi
+for index, row in future_results.iterrows():
+    icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
+    st.markdown(
+        f"""
+        <div style="background-color:{bg_color}; padding:10px; border-radius:10px; margin-bottom:10px;">
+            <h3>{icon} {desc}</h3>
+            <p><strong>Time:</strong> {row['Datetime'].strftime('%Y-%m-%d %H:%M')}</p>
+            <p><strong>Predicted UV Index:</strong> {row['Predicted_Index']}</p>
         </div>
-        """,unsafe_allow_html=True,)
+        """,
+        unsafe_allow_html=True
+    )
