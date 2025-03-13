@@ -88,41 +88,49 @@ elif menu == "Indeks UV":
     
     st.markdown(f"""
     <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
-        <p><b>Pukul:</b> {13:00}</p>
+        <p><b>Pukul:</b> {13:00 ('%H:%M')}</p>
     </div>
     """,unsafe_allow_html=True,)
     
     st.subheader("⏳ Prediksi Indeks UV")
-    data = {
-        "Datetime": ["14:00", "15:00", "16:00", "17:00", "18:00"],
-        "Predicted_Index": [7, 5, 4, 0, 0]
-    }
-    df = pd.DataFrame(data)
-    
-    def get_uv_category(uv_level):
-        if uv_level < 3:
-            return "🟢", "Low", "#00ff00"
-        elif uv_level < 6:
-            return "🟡", "Moderate", "#ffe600"
-        elif uv_level < 8:
-            return "🟠", "High", "#ff8c00"
-        elif uv_level < 11:
-            return "🔴", "Very High", "#ff0000"
-        else:
-            return "🟣", "Extreme", "#9900cc"
-            
-    cols = st.columns(len(df))
-    for i, row in df.iterrows():
-        icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
-        with cols[i]:
-            st.markdown(
-                f"""
-                <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
-                <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
-                <h2 style="color:white;">{icon} {row['Predicted_Index']}</h2>
-                <p style="color:white;">{desc}</p>
-                </div>
-                """,unsafe_allow_html=True,)
+data = {
+    "Datetime": ["14:00", "15:00", "16:00", "17:00", "18:00"],
+    "Predicted_Index": [7, 5, 4, 0, 0]
+}
+df = pd.DataFrame(data)
+
+# Fungsi kategori UV
+def get_uv_category(uv_level):
+    if uv_level < 3:
+        return "🟢", "Low", "#00ff00"
+    elif uv_level < 6:
+        return "🟡", "Moderate", "#ffe600"
+    elif uv_level < 8:
+        return "🟠", "High", "#ff8c00"
+    elif uv_level < 11:
+        return "🔴", "Very High", "#ff0000"
+    else:
+        return "🟣", "Extreme", "#9900cc"
+
+st.subheader("⏳ Prediksi Indeks UV")
+
+cols = st.columns(len(df))  # Menyesuaikan jumlah kolom
+
+# Menampilkan hasil prediksi dengan format yang benar
+for i, row in df.iterrows():
+    icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
+    with cols[i]:
+        st.markdown(
+            f"""
+            <div style="text-align:center; padding:12px; border-radius:10px;
+                        background-color:{bg_color}; box-shadow: 3px 3px 8px rgba(0,0,0,0.2);">
+                <h3 style="color:white; margin: 0;">{row['Datetime']}</h3>
+                <h2 style="color:white; margin: 5px 0;">{icon} {row['Predicted_Index']}</h2>
+                <p style="color:white; font-size:14px;">{desc}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
     
 elif menu == "Panduan Perlindungan":
     st.subheader("🛡️ Panduan Perlindungan")
