@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 
-st.markdown( """
+st.markdown("""
     <style>
     .header {
         background-color: #D6D6F5; padding: 10px; text-align: center; border-radius: 7px;
@@ -16,7 +16,7 @@ st.markdown( """
         <img src="https://upload.wikimedia.org/wikipedia/id/2/2d/Undip.png" alt="Logo">
     </div>
     """,
-    unsafe_allow_html=True )
+    unsafe_allow_html=True)
 
 # Navigasi Sidebar
 st.sidebar.title("Navigasi")
@@ -24,12 +24,15 @@ menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Panduan Perlindu
 
 # Tampilan Beranda
 if menu == "Beranda":
+    st.subheader("Selamat Datang di Sistem Pemantauan Indeks UV")
+    st.write("Gunakan navigasi di sebelah kiri untuk melihat data dan panduan perlindungan.")
 
 elif menu == "Indeks UV":
     st.subheader("🌞 Kondisi UV Sekarang")
-    last_index = 5
+    last_index = 5  # Contoh nilai indeks UV
+    
     fig = go.Figure(go.Indicator(
-        mode="gauge+number", value= last_index, gauge={
+        mode="gauge+number", value=last_index, gauge={
             'axis': {'range': [0, 11]},
             'bar': {'color': "#3098ff"},
             'steps': [
@@ -41,74 +44,55 @@ elif menu == "Indeks UV":
             ]
         }
     ))
-    fig.update_layout(
-        margin=dict(t=30, b=30, l=30, r=30))
-    
+    fig.update_layout(margin=dict(t=30, b=30, l=30, r=30))
     st.plotly_chart(fig, use_container_width=True)
-    st.markdown(f"""
-    <div style="text-align: center;"><span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
-                    background-color: {'#d4edda' if last_index <= 2 else '#fcfac0' if last_index <= 5 else '#ffc78f' if last_index <= 7 else '#ff8a8a' if last_index <= 10 else '#e7cafc'};">
-            {"<p style='color: #00ff00;'><strong>✅ Tingkat aman:</strong> Gunakan pelembab tabir surya SPF 30+ dan kacamata hitam.</p>" if last_index <= 2 else
-             "<p style='color: #ffcc00;'><strong>⚠️ Tingkat bahaya sedang:</strong> Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam, kenakan pakaian pelindung matahari.</p>" if last_index <= 5 else
-             "<p style='color: #ff6600;'><strong>⚠️ Tingkat bahaya tinggi:</strong> Kurangi paparan matahari antara pukul 10 pagi hingga pukul 4 sore.</p>" if last_index <= 7 else
-             "<p style='color: #ff0000;'><strong>⚠️ Tingkat bahaya sangat tinggi:</strong> Tetap di tempat teduh dan oleskan sunscreen setiap 2 jam.</p>" if last_index <= 10 else
-             "<p style='color: #9900cc;'><strong>❗ Tingkat bahaya ekstrem:</strong> Diperlukan semua tindakan pencegahan karena kulit dan mata dapat rusak dalam hitungan menit.</p>"}
-       </span>
-    </div>
-    """, unsafe_allow_html=True,)
     
-    st.markdown(f"""
+    st.markdown("""
     <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
-        <p><b>Pukul:</b> {13:00 ('%H:%M')}</p>
+        <p><b>Pukul:</b> {} WIB</p>
     </div>
-    """,unsafe_allow_html=True,)
+    """.format(pd.Timestamp.now().strftime('%H:%M')), unsafe_allow_html=True)
     
     st.subheader("⏳ Prediksi Indeks UV")
-data = {
-    "Datetime": ["14:00", "15:00", "16:00", "17:00", "18:00"],
-    "Predicted_Index": [7, 5, 4, 0, 0]
-}
-df = pd.DataFrame(data)
+    data = {
+        "Datetime": ["14:00", "15:00", "16:00", "17:00", "18:00"],
+        "Predicted_Index": [7, 5, 4, 0, 0]
+    }
+    df = pd.DataFrame(data)
 
-# Fungsi kategori UV
-def get_uv_category(uv_level):
-    if uv_level < 3:
-        return "🟢", "Low", "#00ff00"
-    elif uv_level < 6:
-        return "🟡", "Moderate", "#ffe600"
-    elif uv_level < 8:
-        return "🟠", "High", "#ff8c00"
-    elif uv_level < 11:
-        return "🔴", "Very High", "#ff0000"
-    else:
-        return "🟣", "Extreme", "#9900cc"
+    # Fungsi kategori UV
+    def get_uv_category(uv_level):
+        if uv_level < 3:
+            return "🟢", "Low", "#00ff00"
+        elif uv_level < 6:
+            return "🟡", "Moderate", "#ffe600"
+        elif uv_level < 8:
+            return "🟠", "High", "#ff8c00"
+        elif uv_level < 11:
+            return "🔴", "Very High", "#ff0000"
+        else:
+            return "🟣", "Extreme", "#9900cc"
 
-st.subheader("⏳ Prediksi Indeks UV")
-
-cols = st.columns(len(df))  # Menyesuaikan jumlah kolom
-
-# Menampilkan hasil prediksi dengan format yang benar
-for i, row in df.iterrows():
-    icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
-    with cols[i]:
-        st.markdown(
-            f"""
+    cols = st.columns(len(df))
+    for i, row in df.iterrows():
+        icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
+        with cols[i]:
+            st.markdown(f"""
             <div style="text-align:center; padding:12px; border-radius:10px;
                         background-color:{bg_color}; box-shadow: 3px 3px 8px rgba(0,0,0,0.2);">
                 <h3 style="color:white; margin: 0;">{row['Datetime']}</h3>
                 <h2 style="color:white; margin: 5px 0;">{icon} {row['Predicted_Index']}</h2>
                 <p style="color:white; font-size:14px;">{desc}</p>
             </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    
+            """, unsafe_allow_html=True)
+
 elif menu == "Panduan Perlindungan":
- st.subheader("🌞 Kondisi UV Sekarang")
+    st.subheader("🌞 Panduan Perlindungan terhadap UV")
+    st.write("Informasi mengenai perlindungan dari paparan sinar UV.")
 
 elif menu == "Data Historis":
- st.subheader("🌞 Kondisi UV Sekarang")
-
+    st.subheader("📊 Data Historis Indeks UV")
+    st.write("Menampilkan data historis indeks UV yang telah dikumpulkan.")
 
 # Custom Footer
 st.markdown("""
