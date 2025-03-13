@@ -49,7 +49,7 @@ elif menu == "Indeks UV":
     
     st.markdown("""
     <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
-        <p><b>Pukul:</b> {} WIB</p>
+        <p><b>Pukul:</b> 13:00 WIB</p>
     </div>
     """.format(pd.Timestamp.now().strftime('%H:%M')), unsafe_allow_html=True)
     
