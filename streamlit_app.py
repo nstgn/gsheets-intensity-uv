@@ -1,6 +1,8 @@
 # Custom Header
 import streamlit as st
 import plotly.graph_objects as go
+import pandas as pd
+
 st.markdown( """
     <style>
     .header {
@@ -79,7 +81,7 @@ elif menu == "Indeks UV":
     
     st.markdown(f"""
     <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
-        <p><b>Pukul:</b> {13.00}</p>
+        <p><b>Pukul:</b> {13:00}</p>
     </div>
     """,unsafe_allow_html=True,)
     
