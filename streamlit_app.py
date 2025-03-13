@@ -47,9 +47,9 @@ if menu == "Beranda":
 
 elif menu == "Indeks UV":
     st.subheader("🌞 Kondisi UV Sekarang")
-        
+    last_index = 5
     fig = go.Figure(go.Indicator(
-        mode="gauge+number", value=6, gauge={
+        mode="gauge+number", value= last_index, gauge={
             'axis': {'range': [0, 11]},
             'bar': {'color': "#3098ff"},
             'steps': [
